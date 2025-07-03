@@ -3,12 +3,16 @@ import {
   DynamoDBDocumentClient,
   GetCommand,
 } from '@aws-sdk/lib-dynamodb';
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import * as bcrypt from 'bcrypt';
+import { DYNAMODB_CLIENT } from 'src/database/dynamodb.module';
 
 @Injectable()
 export class UserService {
-  constructor(private readonly dbClient: DynamoDBDocumentClient) {}
+  constructor(
+    @Inject(DYNAMODB_CLIENT)
+    private readonly dbClient: DynamoDBDocumentClient,
+  ) {}
 
   private readonly tableName = 'Users';
   async createUser(user: {
